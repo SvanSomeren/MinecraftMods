@@ -21,11 +21,54 @@ public class NickChanger implements CommandExecutor {
         if(command.getName().equalsIgnoreCase("nick")){
             if(player.hasPermission("rebelsnick.changenick")){
 
-                if(strings.length > 0) {
-                    player.setDisplayName(strings[0]);
-                    player.sendMessage(ChatColor.GOLD + "Changed your nickname to: " + strings[0]);
-                    RebelsNick.config.set(player.getUniqueId().toString(), strings[0]);
-                    return true;
+                if(strings.length == 1) {
+                    if(strings[0].equalsIgnoreCase("clear")){
+                        player.setDisplayName(player.getName());
+                        player.sendMessage(ChatColor.GOLD + "Your nickname has been reset");
+                        RebelsNick.config.set(player.getUniqueId().toString(), strings[0]);
+                        return true;
+                    }
+                    else{
+                        player.setDisplayName(strings[0]);
+                        player.sendMessage(ChatColor.GOLD + "Changed your nickname to: " + strings[0]);
+                        RebelsNick.config.set(player.getUniqueId().toString(), strings[0]);
+                        return true;
+                    }
+                }
+                else if(strings.length == 2){
+                    if(player.hasPermission("rebelsnick.changeothernick")){
+                        Player playerToChange = RebelsNick.getPlugin(RebelsNick.class).getServer().getPlayer(strings[1]);
+                        try {
+                            playerToChange.setDisplayName(strings[0]);
+                        }
+                        catch(Exception e){
+                            player.sendMessage(ChatColor.GOLD + "Could not find  player named " + strings[1]);
+                            return true;
+                        }
+                        player.sendMessage(ChatColor.GOLD + "Changed " + playerToChange.getName() + "'s name to " + strings[0]);
+                        playerToChange.sendMessage(ChatColor.GOLD + "Changed your nickname to: " + strings[0]);
+                        RebelsNick.config.set(playerToChange.getUniqueId().toString(), strings[0]);
+                        return true;
+                    }
+                }
+                else if(strings.length == 3){
+                    if(player.hasPermission("rebelsnick.changeothernick")){
+                        if(strings[2].equalsIgnoreCase("-s")){
+                            Player playerToChange = RebelsNick.getPlugin(RebelsNick.class).getServer().getPlayer(strings[1]);
+                            try {
+                                playerToChange.setDisplayName(strings[0]);
+                            }
+                            catch(Exception e){
+                                player.sendMessage(ChatColor.GOLD + "Could not find  player named " + strings[1]);
+                                return true;
+                            }
+                            RebelsNick.config.set(playerToChange.getUniqueId().toString(), strings[0]);
+                        }
+                        else{
+                            player.sendMessage(ChatColor.GOLD + "Improper use of silencing argument, use -s to silence the command");
+                        }
+
+                    }
                 }
                 else{
                     return false;
@@ -110,6 +153,7 @@ public class NickChanger implements CommandExecutor {
             String playername = ChatColor.stripColor(player.getDisplayName());
             player.setDisplayName(ChatColor.valueOf(color) + playername + ChatColor.WHITE);
             player.sendMessage(ChatColor.GOLD + "Changed your nickname color to " + color);
+            RebelsNick.config.set(player.getUniqueId().toString(), ChatColor.valueOf(color) + playername + ChatColor.WHITE );
         }
         else{
             player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission to change your nickname");

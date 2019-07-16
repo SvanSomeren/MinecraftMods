@@ -1,5 +1,5 @@
 name: RebelsNick
-version: "1.2"
+version: "1.5"
 main: wailord2.rebelsnick.rebelsnick.RebelsNick
 api-version: "1.13"
 authors: [wailord2]
@@ -10,10 +10,12 @@ commands:
   nickcolor:
     description: Change the color of the players nickname
 permissions:
+  rebelsnick.changeothernick:
+    default: true
   rebelsnick.changenick:
     default: true
   rebelsnick.black:
-    default: true
+    default: false
   rebelsnick.dark_blue:
     default: false
   rebelsnick.dark_green:
