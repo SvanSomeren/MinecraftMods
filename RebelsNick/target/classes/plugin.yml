@@ -1,0 +1,48 @@
+name: RebelsNick
+version: "1.1"
+main: wailord2.rebelsnick.rebelsnick.RebelsNick
+api-version: "1.13"
+authors: [wailord2]
+description: Plugin to change nicknames and colors of names.
+commands:
+  nick:
+    description: Changes the nickname of the player
+    usage: /nick <newname>
+  nickcolor:
+    description: Change the color of the players nickname
+    usage: /nickcolor <color> (/nickcolor dark_purple)
+permissions:
+  rebelsnick.changenick:
+    default: false
+  rebelsnick.black:
+    default: false
+  rebelsnick.dark_blue:
+    default: false
+  rebelsnick.dark_green:
+    default: false
+  rebelsnick.dark_aqua:
+    default: false
+  rebelsnick.dark_red:
+    default: false
+  rebelsnick.dark_purple:
+    default: false
+  rebelsnick.gold:
+    default: false
+  rebelsnick.gray:
+    default: false
+  rebelsnick.dark_gray:
+    default: false
+  rebelsnick.blue:
+    default: false
+  rebelsnick.green:
+    default: false
+  rebelsnick.aqua:
+    default: false
+  rebelsnick.red:
+    default: false
+  rebelsnick.light_purple:
+    default: false
+  rebelsnick.yellow:
+    default: false
+  rebelsnick.white:
+    default: false
