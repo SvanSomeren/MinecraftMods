@@ -1,0 +1,16 @@
+name: NickPlugin
+main: nickmod.Main
+version: "1.0"
+commands:
+    nick:
+        description: Changes the nickname of the player
+    nickcolor:
+        description: Change the color of the players nickname
+permissions:
+    nickplugin.red:
+      default: false
+    nickplugin.blue:
+      default: false
+    nickplugin.yellow:
+      default: false
+
