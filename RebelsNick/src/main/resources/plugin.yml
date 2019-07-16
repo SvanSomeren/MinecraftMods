@@ -1,5 +1,5 @@
 name: RebelsNick
-version: "1.5"
+version: "1.10"
 main: wailord2.rebelsnick.rebelsnick.RebelsNick
 api-version: "1.13"
 authors: [wailord2]

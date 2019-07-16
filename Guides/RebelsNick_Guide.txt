@@ -1,0 +1,83 @@
+----------------------------------------------------------------------------------------------------------------------------------------------
+RebelsNick by wailord2
+Custom plugin for changing names of players
+Written on Minecraft version 1.14.3
+----------------------------------------------------------------------------------------------------------------------------------------------
+Possible Commands
+    Players:
+        /nick <newname>
+            change their nickname into something else
+        /nick clear
+            reset their nickname
+        /nickcolor <color>
+            change the color of their name
+        /nc
+            open gui to change color of their name
+
+    Staff:
+        /nick <newname> <playername> <"-s" ( OPTIONAL - to silently change their name)>
+            change the nickname of someone else, optionally silently so they dont get notified
+        /nick clear <playername> <"-s" ( OPTIONAL - to silently clear their nickname)>
+            reset the nickname of someone else, optionally silently so they dont get notified
+        /nickcolor <color> <playername>
+            change the color of another player
+
+Color possibilities
+    write the color for the /nickcolor <color> in the same format as its written in the Permission List.
+    I.e. /nickcolor dark_green wailord2
+----------------------------------------------------------------------------------------------------------------------------------------------
+Permission List
+
+  rebelsnick.changeothernick:
+    default: false
+
+  rebelsnick.changenick:
+    default: false
+
+  rebelsnick.black:
+    default: false
+
+  rebelsnick.dark_blue:
+    default: false
+
+  rebelsnick.dark_green:
+    default: false
+
+  rebelsnick.dark_aqua:
+    default: false
+    
+  rebelsnick.dark_red:
+    default: false
+
+  rebelsnick.dark_purple:
+    default: false
+
+  rebelsnick.gold:
+    default: false
+
+  rebelsnick.gray:
+    default: false
+
+  rebelsnick.dark_gray:
+    default: false
+
+  rebelsnick.blue:
+    default: false
+
+  rebelsnick.green:
+    default: false
+
+  rebelsnick.aqua:
+    default: false
+
+  rebelsnick.red:
+    default: false
+
+  rebelsnick.light_purple:
+    default: false
+
+  rebelsnick.yellow:
+    default: false
+
+  rebelsnick.white:
+    default: false
