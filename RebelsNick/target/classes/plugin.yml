@@ -1,5 +1,5 @@
 name: RebelsNick
-version: "1.1"
+version: "1.2"
 main: wailord2.rebelsnick.rebelsnick.RebelsNick
 api-version: "1.13"
 authors: [wailord2]
@@ -7,15 +7,13 @@ description: Plugin to change nicknames and colors of names.
 commands:
   nick:
     description: Changes the nickname of the player
-    usage: /nick <newname>
   nickcolor:
     description: Change the color of the players nickname
-    usage: /nickcolor <color> (/nickcolor dark_purple)
 permissions:
   rebelsnick.changenick:
-    default: false
+    default: true
   rebelsnick.black:
-    default: false
+    default: true
   rebelsnick.dark_blue:
     default: false
   rebelsnick.dark_green:

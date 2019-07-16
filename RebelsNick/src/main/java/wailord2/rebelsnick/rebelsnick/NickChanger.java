@@ -24,6 +24,7 @@ public class NickChanger implements CommandExecutor {
                 if(strings.length > 0) {
                     player.setDisplayName(strings[0]);
                     player.sendMessage(ChatColor.GOLD + "Changed your nickname to: " + strings[0]);
+                    RebelsNick.config.set(player.getUniqueId().toString(), strings[0]);
                     return true;
                 }
                 else{
@@ -32,6 +33,7 @@ public class NickChanger implements CommandExecutor {
 
             }
             else{
+                player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission to change your nickname");
                 return false;
             }
         }
@@ -110,7 +112,7 @@ public class NickChanger implements CommandExecutor {
             player.sendMessage(ChatColor.GOLD + "Changed your nickname color to " + color);
         }
         else{
-            player.sendMessage(ChatColor.GOLD + "You do not have permission to change your name to " + color);
+            player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission to change your nickname");
         }
     }
 }
