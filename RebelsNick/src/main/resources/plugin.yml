@@ -11,9 +11,9 @@ commands:
     description: Change the color of the players nickname
 permissions:
   rebelsnick.changeothernick:
-    default: true
+    default: false
   rebelsnick.changenick:
-    default: true
+    default: false
   rebelsnick.black:
     default: false
   rebelsnick.dark_blue:
