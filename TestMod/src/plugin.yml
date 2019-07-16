@@ -1,0 +1,6 @@
+name: Wailordsplugin
+main: testmod.Main
+version: "1.0"
+commands:
+    wailord:
+        description: Main command for wailords plugin
