@@ -133,6 +133,9 @@ public class NickChanger implements CommandExecutor {
             }
             if(strings.length == 2){
                 switch(color){
+                    default:
+                        player.sendMessage(ChatColor.GOLD + "That color does not exist.");
+                        break;
                     case "black":
                         changeOtherColor(player, strings[1],  "BLACK");
                         break;
@@ -181,11 +184,15 @@ public class NickChanger implements CommandExecutor {
                     case "white":
                         changeOtherColor(player, strings[1],  "WHITE");
                         break;
+
                 }
             }
 
             if(strings.length == 1) {
                 switch (color) {
+                    default:
+                        player.sendMessage(ChatColor.GOLD + "That color does not exist.");
+                        break;
                     case "black":
                         changeNickColor(player, "rebelsnick.black", "BLACK");
                         break;
