@@ -1,0 +1,6 @@
+name: RebelsTransfer
+version: ${project.version}
+main: wailord2.rebelstransfer.rebelstransfer.RebelsTransfer
+api-version: 1.13
+authors: [wailord2]
+description: Plugin to trade claimblocks between players
