@@ -23,7 +23,7 @@ public class NickChanger implements CommandExecutor {
                 if(strings[0].equalsIgnoreCase("clear")){
                     player.setDisplayName(player.getName());
                     player.sendMessage(ChatColor.GOLD + "Your nickname has been reset.");
-                    RebelsNick.config.set(player.getUniqueId().toString(), strings[0]);
+                    RebelsNick.config.set(player.getUniqueId().toString(), player.getName());
                     return true;
                 }
             }
@@ -34,7 +34,7 @@ public class NickChanger implements CommandExecutor {
                     if(strings[0].equalsIgnoreCase("clear")){
                         player.setDisplayName(player.getName());
                         player.sendMessage(ChatColor.GOLD + "Your nickname has been reset.");
-                        RebelsNick.config.set(player.getUniqueId().toString(), strings[0]);
+                        RebelsNick.config.set(player.getUniqueId().toString(), player.getName());
                         return true;
                     }
                     else{
