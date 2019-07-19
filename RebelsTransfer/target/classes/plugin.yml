@@ -1,5 +1,5 @@
 name: RebelsTransfer
-version: "1.2.3"
+version: "1.6"
 main: wailord2.rebelstransfer.rebelstransfer.RebelsTransfer
 api-version: "1.13"
 authors: [wailord2]
@@ -8,5 +8,12 @@ commands:
   cbpay:
     description: Used to send claimblocks to other players
     usage: "§6Correct usage: /cbpay [name] [amount]"
-
+  cbwithdraw:
+    description: Used to withdraw claimblocks onto a voucher
+    usage: "§6Correct usage: /cbwithdraw [amount]"
+permissions:
+  rebelstransfer.cbpay:
+    default: op
+  rebelstransfer.cbwithdraw:
+    default: op
 

@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c27f9651-c1c0-4dd1-b957-51a08df1f498" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/wailord2/rebelsnick/rebelsnick/NickChanger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/wailord2/rebelsnick/rebelsnick/NickChanger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RebelsTransfer/.idea/libraries/GriefPrevention.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../RebelsTransfer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../RebelsTransfer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RebelsTransfer/RebelsTransfer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../RebelsTransfer/RebelsTransfer.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RebelsTransfer/src/main/java/wailord2/rebelstransfer/rebelstransfer/RebelsTransfer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RebelsTransfer/src/main/java/wailord2/rebelstransfer/rebelstransfer/RebelsTransfer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RebelsTransfer/src/main/java/wailord2/rebelstransfer/rebelstransfer/Transferer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RebelsTransfer/src/main/java/wailord2/rebelstransfer/rebelstransfer/Transferer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RebelsTransfer/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../RebelsTransfer/src/main/resources/plugin.yml" afterDir="false" />
@@ -57,8 +53,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/wailord2/rebelsnick/rebelsnick/NickChanger.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="25" column="91" selection-start-line="25" selection-start-column="91" selection-end-line="25" selection-end-column="91" />
+            <state relative-caret-position="600">
+              <caret line="114" column="17" lean-forward="true" selection-start-line="114" selection-start-column="17" selection-end-line="114" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -131,8 +127,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1928" />
-    <option name="y" value="-4" />
+    <option name="x" value="-1933" />
+    <option name="y" value="-8" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -142,7 +138,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -196,13 +191,14 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../RebelsTransfer" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="database.data.csv.formats" />
@@ -299,16 +295,19 @@
       <workItem from="1563444372370" duration="1447000" />
       <workItem from="1563461999793" duration="4493000" />
       <workItem from="1563486787609" duration="2285000" />
+      <workItem from="1563529436085" duration="36000" />
+      <workItem from="1563530795093" duration="844000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36468000" />
+    <option name="totallyTimeSpent" value="37348000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-4" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26066098" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26599148" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -372,13 +371,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/resources/config.yml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="32" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -386,10 +378,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="32" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/wailord2/rebelsnick/rebelsnick/NickChanger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="25" column="91" selection-start-line="25" selection-start-column="91" selection-end-line="25" selection-end-column="91" />
+        <state relative-caret-position="600">
+          <caret line="114" column="17" lean-forward="true" selection-start-line="114" selection-start-column="17" selection-end-line="114" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

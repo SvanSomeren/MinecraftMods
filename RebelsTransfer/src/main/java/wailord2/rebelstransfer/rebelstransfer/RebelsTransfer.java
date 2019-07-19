@@ -9,6 +9,7 @@ public final class RebelsTransfer extends JavaPlugin {
         getLogger().info("RebelsTransfer - RebelsTransfer is now enabled");
         Transferer transferer = new Transferer(getConfig(), this);
         getCommand("cbpay").setExecutor(transferer);
+        getCommand("cbwithdraw").setExecutor(transferer);
     }
 
     @Override

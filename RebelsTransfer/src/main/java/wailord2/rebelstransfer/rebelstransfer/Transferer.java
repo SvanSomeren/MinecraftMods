@@ -24,6 +24,7 @@ public class Transferer implements CommandExecutor {
     private FileConfiguration config;
     private Plugin plugin;
     private Plugin griefPrevention;
+    private int baseBlocks = 250;
 
     public Transferer(FileConfiguration config, Plugin plugin){
         this.config = config;
@@ -37,7 +38,25 @@ public class Transferer implements CommandExecutor {
         Player player = (Player) sender;
 
         if (command.getName().equalsIgnoreCase("cbpay")) {
+            if(!player.hasPermission("rebelstransfer.cbpay"))
+            {
+                player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission for that command.");
+                return true;
+
+            }
+            if(player.getName().equalsIgnoreCase(args[0])){
+                player.sendMessage(ChatColor.GOLD + "You cannot pay yourself.");
+                return true;
+            }
             if (args.length == 2) {
+
+                try{
+                    Integer.valueOf(args[1]);
+                }
+                catch (Exception e){
+                    player.sendMessage(ChatColor.GOLD + "You cannot use special characters in the command.");
+                    return true;
+                }
                 if (Integer.valueOf(args[1]) > 0) {
                     try {
                         Player playerToPay = plugin.getServer().getPlayer(args[0]);
@@ -47,9 +66,13 @@ public class Transferer implements CommandExecutor {
                         }
 
                         List<String> playerBlocks = new ArrayList<>(Files.readAllLines(Paths.get("plugins/GriefPreventionData/PlayerData/" + player.getUniqueId()), StandardCharsets.UTF_8));
-                        int availableBlocks = Integer.valueOf(playerBlocks.get(2));
-                        if (availableBlocks - Integer.valueOf(args[1]) > 0) {
-                            int newAvailableBlocks = availableBlocks - Integer.valueOf(args[1]);
+
+                        int playBlocks = Integer.valueOf(playerBlocks.get(1));
+                        int bonusBlocks = Integer.valueOf(playerBlocks.get(2));
+                        int totalBlocks = playBlocks + bonusBlocks - baseBlocks;
+
+                        if (bonusBlocks - Integer.valueOf(args[1]) >= 0) {
+                            int newAvailableBlocks = totalBlocks - Integer.valueOf(args[1]);
 
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + args[1]);
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + playerToPay.getName() + " " + args[1]);
@@ -57,9 +80,23 @@ public class Transferer implements CommandExecutor {
                             player.sendMessage(ChatColor.GOLD + "You paid " + args[1] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
                             playerToPay.sendMessage(ChatColor.GOLD + "You received " + args[1] + " claimblocks from " + player.getName() + ".");
                             return true;
-                        } else {
-                            player.sendMessage(ChatColor.GOLD + "You only have " + availableBlocks + " claimblocks available to trade.");
                         }
+                        else if(totalBlocks - Integer.valueOf(args[1]) >= 0){
+                            int newAvailableBlocks = totalBlocks - Integer.valueOf(args[1]);
+                            int blockToPay = Integer.valueOf(args[1]);
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + bonusBlocks);
+                            blockToPay = blockToPay - bonusBlocks;
+                            int newBlocksFromPlay = playBlocks - blockToPay;
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "setaccruedclaimblocks " + player.getName() + " " + newBlocksFromPlay);
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + playerToPay.getName() + " " + args[1]);
+                            player.sendMessage(ChatColor.GOLD + "You paid " + args[1] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
+                            playerToPay.sendMessage(ChatColor.GOLD + "You received " + args[1] + " claimblocks from " + player.getName() + ".");
+                        }
+                        else {
+                            player.sendMessage(ChatColor.GOLD + "You only have " + totalBlocks + " claimblocks available to trade.");
+                            return true;
+                        }
+
                     } catch (Exception e) {
                         return false;
                     }
@@ -71,8 +108,61 @@ public class Transferer implements CommandExecutor {
             } else {
                 return false;
             }
+        }
+        else if(command.getName().equalsIgnoreCase("cbwithdraw")){
+//            if(!player.hasPermission("rebelstransfer.cbwithdraw"))
+//            {
+//                player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission for that command.");
+//                return true;
+//            }
 
-            return false;
+            if(args.length == 1){
+
+                try{
+                    Integer.valueOf(args[0]);
+                }
+                catch (Exception e){
+                    player.sendMessage(ChatColor.GOLD + "You cannot use special characters in the command.");
+                    return true;
+                }
+                if(Integer.valueOf(args[0]) > 0){
+                    try {
+                        List<String> playerBlocks = new ArrayList<>(Files.readAllLines(Paths.get("plugins/GriefPreventionData/PlayerData/" + player.getUniqueId()), StandardCharsets.UTF_8));
+
+                        int playBlocks = Integer.valueOf(playerBlocks.get(1));
+                        int bonusBlocks = Integer.valueOf(playerBlocks.get(2));
+                        int totalBlocks = playBlocks + bonusBlocks - baseBlocks;
+
+                        if (bonusBlocks - Integer.valueOf(args[0]) >= 0) {
+                            int newAvailableBlocks = totalBlocks - Integer.valueOf(args[0]);
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " blocks\\\"\"]}} 1");
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + args[0]);
+
+                            player.sendMessage(ChatColor.GOLD + "You withdrew " + args[0] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
+                            return true;
+                        } else if (totalBlocks - Integer.valueOf(args[0]) >= 0) {
+                            int newAvailableBlocks = totalBlocks - Integer.valueOf(args[1]);
+
+                            player.sendMessage(ChatColor.GOLD + "You withdrew " + args[0] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
+                        } else {
+                            player.sendMessage(ChatColor.GOLD + "You only have " + totalBlocks + " claimblocks available to trade.");
+                            return true;
+                        }
+                    }
+                    catch(Exception e){
+                        plugin.getLogger().info(e.getMessage());
+                        return false;
+                    }
+                }
+                else{
+                    player.sendMessage(ChatColor.GOLD + "You cant withdraw a negative amount.");
+                }
+
+            }
+            else{
+                return false;
+            }
+
         }
         return true;
     }
