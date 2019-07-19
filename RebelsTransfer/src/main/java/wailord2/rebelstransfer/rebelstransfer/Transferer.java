@@ -33,6 +33,10 @@ public class Transferer implements CommandExecutor {
 
     }
 
+    public Transferer(){
+
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = (Player) sender;
@@ -83,11 +87,14 @@ public class Transferer implements CommandExecutor {
                         }
                         else if(totalBlocks - Integer.valueOf(args[1]) >= 0){
                             int newAvailableBlocks = totalBlocks - Integer.valueOf(args[1]);
+
                             int blockToPay = Integer.valueOf(args[1]);
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + bonusBlocks);
+
                             blockToPay = blockToPay - bonusBlocks;
                             int newBlocksFromPlay = playBlocks - blockToPay;
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "setaccruedclaimblocks " + player.getName() + " " + newBlocksFromPlay);
+
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + playerToPay.getName() + " " + args[1]);
                             player.sendMessage(ChatColor.GOLD + "You paid " + args[1] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
                             playerToPay.sendMessage(ChatColor.GOLD + "You received " + args[1] + " claimblocks from " + player.getName() + ".");
@@ -110,11 +117,11 @@ public class Transferer implements CommandExecutor {
             }
         }
         else if(command.getName().equalsIgnoreCase("cbwithdraw")){
-//            if(!player.hasPermission("rebelstransfer.cbwithdraw"))
-//            {
-//                player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission for that command.");
-//                return true;
-//            }
+            if(!player.hasPermission("rebelstransfer.cbwithdraw"))
+            {
+                player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission for that command.");
+                return true;
+            }
 
             if(args.length == 1){
 
@@ -135,16 +142,28 @@ public class Transferer implements CommandExecutor {
 
                         if (bonusBlocks - Integer.valueOf(args[0]) >= 0) {
                             int newAvailableBlocks = totalBlocks - Integer.valueOf(args[0]);
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " blocks\\\"\"]}} 1");
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " blocks\\\"\"]}} 1");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + args[0]);
 
                             player.sendMessage(ChatColor.GOLD + "You withdrew " + args[0] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
                             return true;
-                        } else if (totalBlocks - Integer.valueOf(args[0]) >= 0) {
-                            int newAvailableBlocks = totalBlocks - Integer.valueOf(args[1]);
+                        }
+                        else if (totalBlocks - Integer.valueOf(args[0]) >= 0) {
+                            int newAvailableBlocks = totalBlocks - Integer.valueOf(args[0]);
+
+
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " blocks\\\"\"]}} 1");
+
+                            int blockToWithdraw = Integer.valueOf(args[0]);
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + bonusBlocks);
+
+                            blockToWithdraw = blockToWithdraw - bonusBlocks;
+                            int newBlocksFromPlay = playBlocks - blockToWithdraw;
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "setaccruedclaimblocks " + player.getName() + " " + newBlocksFromPlay);
 
                             player.sendMessage(ChatColor.GOLD + "You withdrew " + args[0] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
-                        } else {
+                        }
+                        else {
                             player.sendMessage(ChatColor.GOLD + "You only have " + totalBlocks + " claimblocks available to trade.");
                             return true;
                         }
