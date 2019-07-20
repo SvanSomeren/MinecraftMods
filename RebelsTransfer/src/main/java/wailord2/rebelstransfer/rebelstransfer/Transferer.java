@@ -1,42 +1,32 @@
 package wailord2.rebelstransfer.rebelstransfer;
 
 import commandSenders.APICallSender;
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderHook;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.ServerOperator;
 import org.bukkit.plugin.Plugin;
 
-import javax.sql.DataSource;
-import javax.xml.crypto.Data;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.logging.Handler;
-import java.util.logging.LogManager;
-import java.util.logging.LogRecord;
-import java.util.stream.Stream;
 
-public class Transferer implements CommandExecutor {
+public class Transferer implements CommandExecutor, Observer {
 
     private FileConfiguration config;
     private Plugin plugin;
     private Plugin griefPrevention;
     private Plugin placeholderAPI;
     private int baseBlocks = 250;
+    private Player player;
+    private Player playerToPay;
+    private String[] args;
+    private String identifier;
 
     public Transferer(FileConfiguration config, Plugin plugin){
         this.config = config;
@@ -46,32 +36,12 @@ public class Transferer implements CommandExecutor {
 
     }
 
-    public Transferer(){
-
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player = (Player) sender;
+        player = (Player) sender;
 
         if (command.getName().equalsIgnoreCase("cbpay")) {
 
-            plugin.getLogger().getParent().addHandler(new Handler() {
-                @Override
-                public void publish(LogRecord record) {
-                    player.sendMessage(record.getMessage());
-                }
-
-                @Override
-                public void flush() {
-
-                }
-
-                @Override
-                public void close() throws SecurityException {
-
-                }
-            });
             if(!player.hasPermission("rebelstransfer.cbpay"))
             {
                 player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission for that command.");
@@ -102,18 +72,15 @@ public class Transferer implements CommandExecutor {
                 }
                 if (Integer.valueOf(args[1]) > 0) {
                     try {
-                        Player playerToPay = plugin.getServer().getPlayer(args[0]);
+                        playerToPay = plugin.getServer().getPlayer(args[0]);
                         if(playerToPay == null){
                             player.sendMessage(ChatColor.GOLD + "That player is not online.");
                             return true;
                         }
 
-                        List<String> playerBlocks = new ArrayList<>(Files.readAllLines(Paths.get("plugins/GriefPreventionData/PlayerData/" + player.getUniqueId()), StandardCharsets.UTF_8));
+                        identifier = "pay";
 
-                        int playBlocks = Integer.valueOf(playerBlocks.get(1));
-                        int bonusBlocks = Integer.valueOf(playerBlocks.get(2));
-                        int totalBlocks = playBlocks + bonusBlocks - baseBlocks;
-
+                        this.args = args;
                         ServerOperator operator = new ServerOperator() {
                             @Override
                             public boolean isOp() {
@@ -129,37 +96,9 @@ public class Transferer implements CommandExecutor {
                         APICallSender apiCallSender = new APICallSender(operator,player);
                         apiCallSender.setOp(true);
                         apiCallSender.addAttachment(placeholderAPI, "placeholderapi.*", true);
+                        apiCallSender.addObserver(this);
 
                         Bukkit.dispatchCommand(apiCallSender, "papi parse " + player.getName() + " %griefprevention_remainingclaims%");
-
-                        if (bonusBlocks - Integer.valueOf(args[1]) >= 0) {
-                            int newAvailableBlocks = totalBlocks - Integer.valueOf(args[1]);
-
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + args[1]);
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + playerToPay.getName() + " " + args[1]);
-
-                            player.sendMessage(ChatColor.GOLD + "You paid " + args[1] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
-                            playerToPay.sendMessage(ChatColor.GOLD + "You received " + args[1] + " claimblocks from " + player.getName() + ".");
-                            return true;
-                        }
-                        else if(totalBlocks - Integer.valueOf(args[1]) >= 0){
-                            int newAvailableBlocks = totalBlocks - Integer.valueOf(args[1]);
-
-                            int blockToPay = Integer.valueOf(args[1]);
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + bonusBlocks);
-
-                            blockToPay = blockToPay - bonusBlocks;
-                            int newBlocksFromPlay = playBlocks - blockToPay;
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "setaccruedclaimblocks " + player.getName() + " " + newBlocksFromPlay);
-
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + playerToPay.getName() + " " + args[1]);
-                            player.sendMessage(ChatColor.GOLD + "You paid " + args[1] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
-                            playerToPay.sendMessage(ChatColor.GOLD + "You received " + args[1] + " claimblocks from " + player.getName() + ".");
-                        }
-                        else {
-                            player.sendMessage(ChatColor.GOLD + "You only have " + totalBlocks + " claimblocks available to trade.");
-                            return true;
-                        }
 
                     } catch (Exception e) {
                         player.sendMessage(e.getMessage());
@@ -198,39 +137,30 @@ public class Transferer implements CommandExecutor {
                 }
                 if(Integer.valueOf(args[0]) > 0){
                     try {
-                        List<String> playerBlocks = new ArrayList<>(Files.readAllLines(Paths.get("plugins/GriefPreventionData/PlayerData/" + player.getUniqueId()), StandardCharsets.UTF_8));
+                        identifier = "withdraw";
 
-                        int playBlocks = Integer.valueOf(playerBlocks.get(1));
-                        int bonusBlocks = Integer.valueOf(playerBlocks.get(2));
-                        int totalBlocks = playBlocks + bonusBlocks - baseBlocks;
+                        this.args = args;
+                        ServerOperator operator = new ServerOperator() {
+                            @Override
+                            public boolean isOp() {
+                                return true;
+                            }
 
-                        if (bonusBlocks - Integer.valueOf(args[0]) >= 0) {
-                            int newAvailableBlocks = totalBlocks - Integer.valueOf(args[0]);
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " claimblocks\\\"\", \"\\\"Right click to redeem\\\"\"]}} 1");
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + args[0]);
+                            @Override
+                            public void setOp(boolean value) {
 
-                            player.sendMessage(ChatColor.GOLD + "You withdrew " + args[0] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
-                            return true;
-                        }
-                        else if (totalBlocks - Integer.valueOf(args[0]) >= 0) {
-                            int newAvailableBlocks = totalBlocks - Integer.valueOf(args[0]);
+                            }
+                        };
+
+                        APICallSender apiCallSender = new APICallSender(operator,player);
+                        apiCallSender.setOp(true);
+                        apiCallSender.addAttachment(placeholderAPI, "placeholderapi.*", true);
+                        apiCallSender.addObserver(this);
+
+                        Bukkit.dispatchCommand(apiCallSender, "papi parse " + player.getName() + " %griefprevention_remainingclaims%");
 
 
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " claimblocks\\\"\", \"\\\"Right click to redeem\\\"\" ]}} 1");
 
-                            int blockToWithdraw = Integer.valueOf(args[0]);
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + bonusBlocks);
-
-                            blockToWithdraw = blockToWithdraw - bonusBlocks;
-                            int newBlocksFromPlay = playBlocks - blockToWithdraw;
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "setaccruedclaimblocks " + player.getName() + " " + newBlocksFromPlay);
-
-                            player.sendMessage(ChatColor.GOLD + "You withdrew " + args[0] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
-                        }
-                        else {
-                            player.sendMessage(ChatColor.GOLD + "You only have " + totalBlocks + " claimblocks available to trade.");
-                            return true;
-                        }
                     }
                     catch(Exception e){
                         plugin.getLogger().info(e.getMessage());
@@ -238,7 +168,7 @@ public class Transferer implements CommandExecutor {
                     }
                 }
                 else{
-                    player.sendMessage(ChatColor.GOLD + "You cant withdraw a negative amount.");
+                    player.sendMessage(ChatColor.GOLD + "You can't withdraw a negative amount.");
                 }
 
             }
@@ -248,5 +178,70 @@ public class Transferer implements CommandExecutor {
 
         }
         return true;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+
+        if(identifier.contains("pay")){
+            String blockstospend = ((APICallSender)o).getSomeVariable();
+
+            int blocksToSpend = 0;
+
+            try{
+                String newblocks = blockstospend.replaceAll("[^0-9]","");
+                blocksToSpend = Integer.parseInt(newblocks);
+            }
+            catch (Exception e){
+                player.sendMessage("RebelsTransfer - format error.");
+            }
+
+            if (blocksToSpend - Integer.valueOf(args[1]) >= 0) {
+                int newAvailableBlocks = blocksToSpend - Integer.valueOf(args[1]);
+
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + args[1]);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + playerToPay.getName() + " " + args[1]);
+
+                player.sendMessage(ChatColor.GOLD + "You paid " + args[1] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
+                playerToPay.sendMessage(ChatColor.GOLD + "You received " + args[1] + " claimblocks from " + player.getName() + ".");
+            }
+            else {
+                player.sendMessage(ChatColor.GOLD + "You only have " + blocksToSpend + " claimblocks available to trade.");
+            }
+        }
+        else if(identifier.contains("withdraw")){
+            String blockstospend = ((APICallSender)o).getSomeVariable();
+
+            int blocksToSpend = 0;
+
+            try{
+                String newblocks = blockstospend.replaceAll("[^0-9]","");
+                blocksToSpend = Integer.parseInt(newblocks);
+            }
+            catch (Exception e){
+                player.sendMessage("format failure");
+            }
+
+            if (blocksToSpend - Integer.valueOf(args[0]) >= 0) {
+                int newAvailableBlocks = blocksToSpend - Integer.valueOf(args[0]);
+                //Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " claimblocks\\\"\", \"\\\"Right click to redeem\\\"\"]}} 1");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + player.getName() + " paper 1 name:&4Claimblock_Voucher lore:&f" + args[0] + "_Claimblocks|&cRight_click_to_redeem");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + args[0]);
+
+                player.sendMessage(ChatColor.GOLD + "You withdrew " + args[0] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
+            }
+            else {
+                player.sendMessage(ChatColor.GOLD + "You only have " + blocksToSpend + " claimblocks available to trade.");
+            }
+        }
+        else{
+            player.sendMessage("RebelsTransfer - general error.");
+        }
+
+
+
+
+
     }
 }

@@ -9,18 +9,17 @@ import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.*;
 import org.bukkit.plugin.Plugin;
-import wailord2.rebelstransfer.rebelstransfer.RebelsTransfer;
 
 import java.util.*;
-import java.util.logging.Level;
 
-public class APICallSender implements ConsoleCommandSender {
+public class APICallSender extends Observable implements ConsoleCommandSender {
 
     private ServerOperator opable;
     private Permissible parent = this;
     private final List<PermissionAttachment> attachments = new LinkedList<PermissionAttachment>();
     private final Map<String, PermissionAttachmentInfo> permissions = new HashMap<String, PermissionAttachmentInfo>();
     private Player player;
+    private String blocksToSpend;
 
     public APICallSender( ServerOperator opable, Player player) {
         this.opable = opable;
@@ -31,6 +30,18 @@ public class APICallSender implements ConsoleCommandSender {
         }
 
         recalculatePermissions();
+    }
+
+    public void setBlocksToSpend(String blocksToSpend) {
+        synchronized (this) {
+            this.blocksToSpend = blocksToSpend;
+        }
+        setChanged();
+        notifyObservers();
+    }
+
+    public synchronized String getSomeVariable() {
+        return blocksToSpend;
     }
 
     @Override
@@ -238,9 +249,9 @@ public class APICallSender implements ConsoleCommandSender {
 
     @Override
     public void sendMessage(String message) {
-        player.sendMessage("blocks");
-        player.sendMessage(message);
+        setBlocksToSpend(message);
     }
+
 
     @Override
     public void sendMessage(String[] messages) {

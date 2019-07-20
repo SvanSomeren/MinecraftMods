@@ -21,9 +21,9 @@ public class RightClickListener implements Listener {
             ItemStack stack = player.getInventory().getItemInMainHand();
             String lore = stack.getItemMeta().getLore().toString();
             int redeemAmount = 0;
-            if(lore.contains("claimblocks")){
+            if(lore.contains("Claimblocks")){
                 if(lore.contains(" ")){
-                    redeemAmount = Integer.valueOf(lore.substring(1, lore.indexOf(" ")));
+                    redeemAmount = Integer.valueOf(lore.replaceAll("[^0-9]",""));
                 }
 
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " " + redeemAmount);
