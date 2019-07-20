@@ -1,5 +1,5 @@
 name: RebelsTransfer
-version: "1.9"
+version: "1.9.3"
 main: wailord2.rebelstransfer.rebelstransfer.RebelsTransfer
 api-version: "1.13"
 authors: [wailord2]

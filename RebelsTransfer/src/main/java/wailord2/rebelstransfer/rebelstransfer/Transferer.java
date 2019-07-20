@@ -48,11 +48,20 @@ public class Transferer implements CommandExecutor {
                 return true;
 
             }
-            if(player.getName().equalsIgnoreCase(args[0])){
-                player.sendMessage(ChatColor.GOLD + "You cannot pay yourself.");
-                return true;
-            }
+
             if (args.length == 2) {
+
+                if(player.getName().equalsIgnoreCase(args[0])){
+                    player.sendMessage(ChatColor.GOLD + "You cannot pay yourself.");
+                    return true;
+                }
+
+                if(args[1].contains("+"))
+                {
+                    player.sendMessage(ChatColor.GOLD + "You cannot use special characters in the command.");
+                    return true;
+                }
+
 
                 try{
                     Integer.valueOf(args[1]);
@@ -124,6 +133,12 @@ public class Transferer implements CommandExecutor {
             }
 
             if(args.length == 1){
+
+                if(args[0].contains("+"))
+                {
+                    player.sendMessage(ChatColor.GOLD + "You cannot use special characters in the command.");
+                    return true;
+                }
 
                 try{
                     Integer.valueOf(args[0]);
