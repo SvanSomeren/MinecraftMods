@@ -142,7 +142,7 @@ public class Transferer implements CommandExecutor {
 
                         if (bonusBlocks - Integer.valueOf(args[0]) >= 0) {
                             int newAvailableBlocks = totalBlocks - Integer.valueOf(args[0]);
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " blocks\\\"\"]}} 1");
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " claimblocks\\\"\", \"\\\"Right click to redeem\\\"\"]}} 1");
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + args[0]);
 
                             player.sendMessage(ChatColor.GOLD + "You withdrew " + args[0] + " claimblocks. " + "You have " + newAvailableBlocks + " left to trade.");
@@ -152,7 +152,7 @@ public class Transferer implements CommandExecutor {
                             int newAvailableBlocks = totalBlocks - Integer.valueOf(args[0]);
 
 
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " blocks\\\"\"]}} 1");
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:give " + player.getName() + " paper{display:{Name:\"\\\"Claimblock Voucher\\\"\", Lore: [\"\\\"" + args[0] + " claimblocks\\\"\", \"\\\"Right click to redeem\\\"\" ]}} 1");
 
                             int blockToWithdraw = Integer.valueOf(args[0]);
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " -" + bonusBlocks);

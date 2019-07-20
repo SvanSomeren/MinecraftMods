@@ -21,14 +21,16 @@ public class RightClickListener implements Listener {
             ItemStack stack = player.getInventory().getItemInMainHand();
             String lore = stack.getItemMeta().getLore().toString();
             int redeemAmount = 0;
-            if(lore.contains(" ")){
-                redeemAmount = Integer.valueOf(lore.substring(1, lore.indexOf(" ")));
+            if(lore.contains("claimblocks")){
+                if(lore.contains(" ")){
+                    redeemAmount = Integer.valueOf(lore.substring(1, lore.indexOf(" ")));
+                }
+
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " " + redeemAmount);
+                player.sendMessage(ChatColor.GOLD + "Succesfully redeemed " + redeemAmount + " claimblocks.");
+
+                stack.setAmount(stack.getAmount()-1);
             }
-
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "acb " + player.getName() + " " + redeemAmount);
-            player.sendMessage(ChatColor.GOLD + "Succesfully redeemed " + redeemAmount + " claimblocks.");
-
-            stack.setAmount(stack.getAmount()-1);
 
         }
         catch (Exception e){
