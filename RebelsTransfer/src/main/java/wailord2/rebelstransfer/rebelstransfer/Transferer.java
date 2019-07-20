@@ -1,22 +1,33 @@
 package wailord2.rebelstransfer.rebelstransfer;
 
+import commandSenders.APICallSender;
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderHook;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.ServerOperator;
 import org.bukkit.plugin.Plugin;
 
 import javax.sql.DataSource;
 import javax.xml.crypto.Data;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
+import java.util.logging.LogRecord;
 import java.util.stream.Stream;
 
 public class Transferer implements CommandExecutor {
@@ -24,12 +35,14 @@ public class Transferer implements CommandExecutor {
     private FileConfiguration config;
     private Plugin plugin;
     private Plugin griefPrevention;
+    private Plugin placeholderAPI;
     private int baseBlocks = 250;
 
     public Transferer(FileConfiguration config, Plugin plugin){
         this.config = config;
         this.plugin = plugin;
         griefPrevention = plugin.getServer().getPluginManager().getPlugin("GriefPrevention");
+        placeholderAPI = plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI");
 
     }
 
@@ -42,6 +55,23 @@ public class Transferer implements CommandExecutor {
         Player player = (Player) sender;
 
         if (command.getName().equalsIgnoreCase("cbpay")) {
+
+            plugin.getLogger().getParent().addHandler(new Handler() {
+                @Override
+                public void publish(LogRecord record) {
+                    player.sendMessage(record.getMessage());
+                }
+
+                @Override
+                public void flush() {
+
+                }
+
+                @Override
+                public void close() throws SecurityException {
+
+                }
+            });
             if(!player.hasPermission("rebelstransfer.cbpay"))
             {
                 player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission for that command.");
@@ -84,6 +114,24 @@ public class Transferer implements CommandExecutor {
                         int bonusBlocks = Integer.valueOf(playerBlocks.get(2));
                         int totalBlocks = playBlocks + bonusBlocks - baseBlocks;
 
+                        ServerOperator operator = new ServerOperator() {
+                            @Override
+                            public boolean isOp() {
+                                return true;
+                            }
+
+                            @Override
+                            public void setOp(boolean value) {
+
+                            }
+                        };
+
+                        APICallSender apiCallSender = new APICallSender(operator,player);
+                        apiCallSender.setOp(true);
+                        apiCallSender.addAttachment(placeholderAPI, "placeholderapi.*", true);
+
+                        Bukkit.dispatchCommand(apiCallSender, "papi parse " + player.getName() + " %griefprevention_remainingclaims%");
+
                         if (bonusBlocks - Integer.valueOf(args[1]) >= 0) {
                             int newAvailableBlocks = totalBlocks - Integer.valueOf(args[1]);
 
@@ -114,6 +162,7 @@ public class Transferer implements CommandExecutor {
                         }
 
                     } catch (Exception e) {
+                        player.sendMessage(e.getMessage());
                         return false;
                     }
                 }

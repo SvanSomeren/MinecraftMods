@@ -1,9 +1,10 @@
 name: RebelsTransfer
-version: "1.9.3"
+version: "2.0.3"
 main: wailord2.rebelstransfer.rebelstransfer.RebelsTransfer
 api-version: "1.13"
 authors: [wailord2]
 description: Plugin to trade claimblocks between players
+depend: [PlaceholderAPI]
 commands:
   cbpay:
     description: Used to send claimblocks to other players
