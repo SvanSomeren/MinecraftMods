@@ -1,0 +1,9 @@
+name: RebelsAnarchist
+version: "1.7.2"
+main: wailord2.rebelsanarchist.rebelsanarchist.RebelsAnarchist
+api-version: "1.13"
+authors: [wailord2]
+description: Plugin used to stop people without anarchist from using anarchist tools.
+permissions:
+  rebelsanarchist.tools:
+    default: op
