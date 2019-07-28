@@ -14,7 +14,8 @@ public class Teleporter implements CommandExecutor {
 
     private Plugin plugin;
     private Player player;
-    private Map<Player, Timer> playerTimers;
+    private Map<Player, Timer> playerTimers = new HashMap<>();
+    private Map<Timer, Integer> atPlayerCounter = new HashMap<>();
 
     public Teleporter(Plugin plugin){
         this.plugin = plugin;
@@ -30,16 +31,27 @@ public class Teleporter implements CommandExecutor {
         }
 
         if(command.getName().equalsIgnoreCase("tpostart")){
-            if(args.length == 0){
-                Timer timer = new Timer();
-                playerTimers.put(player, timer);
-                startFromPlayer(timer, 1);
-                return true;
+            if(args.length == 1){
+                try{
+                    Timer timer = new Timer();
+                    playerTimers.put(player, timer);
+                    startFromPlayer(timer, 1, Integer.valueOf(args[0]));
+                    return true;
+                }
+                catch (Exception e){
+                    return true;
+                }
             }
-            else if(args.length == 1){
-                Timer timer = new Timer();
-                playerTimers.put(player, timer);
-                startFromPlayer(timer, Integer.valueOf(args[0]));
+            else if(args.length == 2){
+                try{
+
+                    Timer timer = new Timer();
+                    playerTimers.put(player, timer);
+                    startFromPlayer(timer, Integer.valueOf(args[1]), Integer.valueOf(args[0]));
+                }
+                catch (Exception e){
+                    return true;
+                }
             }
             return false;
 
@@ -48,14 +60,14 @@ public class Teleporter implements CommandExecutor {
             if(args.length == 0) {
                 try {
                     if (playerTimers.get(player) != null) {
-                        player.sendMessage(ChatColor.GOLD + "Stopping automated tpo check.");
+                        player.sendMessage(ChatColor.GOLD + "Stopping automated tpo check. Stopping at player number " + atPlayerCounter.get(playerTimers.get(player)));
                         Timer timerToStop = playerTimers.get(player);
                         timerToStop.cancel();
                         timerToStop.purge();
                     }
                 }
                 catch (Exception e){
-                    player.sendMessage(ChatColor.GOLD + "You do not have a timer running at the moment.");
+                    player.sendMessage(ChatColor.GOLD + "You do not have an automated tpo check running at the moment.");
                 }
             }
 
@@ -67,10 +79,24 @@ public class Teleporter implements CommandExecutor {
         return false;
     }
 
-    public void startFromPlayer(Timer timer, int firstPlayer){
+    public void startFromPlayer(Timer timer, int interval, int firstPlayer){
         Collection players = plugin.getServer().getOnlinePlayers();
 
         Iterator iterator = players.iterator();
+
+        if(firstPlayer > players.size()){
+            player.sendMessage(ChatColor.GOLD + "That number is too high.");
+            return;
+        }
+
+        atPlayerCounter.put(timer, 0);
+
+        for(int i = 1; i < firstPlayer; i++){
+            int currentPlayer = atPlayerCounter.get(timer);
+            iterator.next();
+            currentPlayer++;
+            atPlayerCounter.replace(timer, currentPlayer);
+        }
 
         player.sendMessage(ChatColor.GOLD + "Starting automated tpo check.");
 
@@ -90,19 +116,30 @@ public class Teleporter implements CommandExecutor {
                                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                                     @Override
                                     public void run() {
-                                        Bukkit.dispatchCommand(player, "tpo " + possibleNext.getName());
+                                        try {
+                                            int currentPlayer = atPlayerCounter.get(timer);
+                                            currentPlayer++;
+                                            atPlayerCounter.replace(timer, currentPlayer);
+                                            Bukkit.dispatchCommand(player, "tpo " + possibleNext.getName());
+                                        }
+                                        catch (Exception e){
+                                            player.sendMessage(ChatColor.GOLD + "Can't find player, moving to next.");
+                                        }
                                     }
                                 });
                             }
                         } else {
-                            player.sendMessage(ChatColor.GOLD + "Finished automated tpo check.");
+                            player.sendMessage(ChatColor.GOLD + "Finished automated tpo check. Stopping at player number " + atPlayerCounter.get(timer));
+                            Timer timerToStop = playerTimers.get(player);
+                            timerToStop.cancel();
+                            timerToStop.purge();
                         }
                     }
                     catch (Exception e){
 
                     }
                 }
-            } , 0, Integer.valueOf(String.valueOf(plugin.getConfig().get("interval"))));
+            } , 0, interval*1000);
         }
         else{
             player.sendMessage(ChatColor.GOLD + "No players found to check.");

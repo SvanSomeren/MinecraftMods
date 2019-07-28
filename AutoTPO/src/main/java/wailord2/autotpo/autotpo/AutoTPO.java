@@ -10,7 +10,6 @@ public final class AutoTPO extends JavaPlugin {
         Teleporter teleporter = new Teleporter(this);
         saveConfig();
         getCommand("tpostart").setExecutor(teleporter);
-        getCommand("tpopause").setExecutor(teleporter);
         getCommand("tpostop").setExecutor(teleporter);
 
     }

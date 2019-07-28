@@ -1,5 +1,5 @@
 name: AutoTPO
-version: "1.3"
+version: "1.5"
 main: wailord2.autotpo.autotpo.AutoTPO
 api-version: "1.13"
 authors: [wailord2]
@@ -7,7 +7,6 @@ description: Plugin used to automatically execute tpo check.
 commands:
   tpostart:
     description: Start automated tpo check.
-  tpopause:
-    description: Pause automated tpo check.
+    usage: /tpostart [interval] or /tpostart [interval] [counttostartat]
   tpostop:
     description: Stop automated tpo check.
