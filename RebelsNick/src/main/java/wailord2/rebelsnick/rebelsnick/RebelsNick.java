@@ -15,7 +15,7 @@ public final class RebelsNick extends JavaPlugin{
 
     @Override
     public void onEnable(){
-        getLogger().info("RebelsNick - RebelsNick is now enabled");
+        getLogger().info("SimpleNick - SimpleNick is now enabled");
         NickChanger nickChanger = new NickChanger();
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         config = getConfig();
@@ -26,7 +26,7 @@ public final class RebelsNick extends JavaPlugin{
     @Override
     public void onDisable(){
         saveConfig();
-        getLogger().info("RebelsNick - RebelsNick is now disabled");
+        getLogger().info("SimpleNick - SimpleNick is now disabled");
     }
 
 }

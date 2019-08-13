@@ -20,7 +20,7 @@ public class PlayerJoinListener implements Listener {
             Player player = event.getPlayer();
             player.setDisplayName(RebelsNick.config.get(player.getUniqueId().toString()).toString());
         }catch (Exception e){
-            getLogger().info("RebelsNick - This player has not had their name changed yet, so no nickname could be applied.");
+            getLogger().info("SimpleNick - This player has not had their name changed yet, so no nickname could be applied.");
         }
     }
 }

@@ -29,7 +29,7 @@ public class NickChanger implements CommandExecutor {
             }
 
 
-            if(player.hasPermission("rebelsnick.changenick")){
+            if(player.hasPermission("simplenick.changenick")){
                 if(strings.length == 1) {
                     if(strings[0].equalsIgnoreCase("clear")){
                         player.setDisplayName(player.getName());
@@ -45,7 +45,7 @@ public class NickChanger implements CommandExecutor {
                     }
                 }
                 else if(strings.length == 2){
-                    if(player.hasPermission("rebelsnick.changeothernick")){
+                    if(player.hasPermission("simplenick.changeothernick")){
                         if(strings[0].equalsIgnoreCase("clear")){
                             Player playerToChange = RebelsNick.getPlugin(RebelsNick.class).getServer().getPlayer(strings[1]);
                             try {
@@ -74,11 +74,11 @@ public class NickChanger implements CommandExecutor {
                         return true;
                     }
                     else{
-                        player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission for that command.");
+                        player.sendMessage(ChatColor.RED + "You do not have permission for that command.");
                     }
                 }
                 else if(strings.length == 3){
-                    if(player.hasPermission("rebelsnick.changeothernick")){
+                    if(player.hasPermission("simplenick.changeothernick")){
                         if(strings[2].equalsIgnoreCase("-s")){
                             if(strings[0].equalsIgnoreCase("clear")){
                                 Player playerToChange = RebelsNick.getPlugin(RebelsNick.class).getServer().getPlayer(strings[1]);
@@ -110,7 +110,7 @@ public class NickChanger implements CommandExecutor {
 
                     }
                     else{
-                        player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission for that command.");
+                        player.sendMessage(ChatColor.RED + "You do not have permission for that command.");
                     }
                 }
                 else{
@@ -119,7 +119,7 @@ public class NickChanger implements CommandExecutor {
 
             }
             else{
-                player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission to change your nickname.");
+                player.sendMessage(ChatColor.RED + "You do not have permission to change your nickname.");
                 return false;
             }
         }
@@ -194,52 +194,52 @@ public class NickChanger implements CommandExecutor {
                         player.sendMessage(ChatColor.GOLD + "That color does not exist.");
                         break;
                     case "black":
-                        changeNickColor(player, "rebelsnick.black", "BLACK");
+                        changeNickColor(player, "simplenick.black", "BLACK");
                         break;
                     case "dark_blue":
-                        changeNickColor(player, "rebelsnick.dark_blue", "DARK_BLUE");
+                        changeNickColor(player, "simplenick.dark_blue", "DARK_BLUE");
                         break;
                     case "dark_green":
-                        changeNickColor(player, "rebelsnick.dark_green", "DARK_GREEN");
+                        changeNickColor(player, "simplenick.dark_green", "DARK_GREEN");
                         break;
                     case "dark_aqua":
-                        changeNickColor(player, "rebelsnick.dark_aqua", "DARK_AQUA");
+                        changeNickColor(player, "simplenick.dark_aqua", "DARK_AQUA");
                         break;
                     case "dark_red":
-                        changeNickColor(player, "rebelsnick.dark_red", "DARK_RED");
+                        changeNickColor(player, "simplenick.dark_red", "DARK_RED");
                         break;
                     case "dark_purple":
-                        changeNickColor(player, "rebelsnick.dark_purple", "DARK_PURPLE");
+                        changeNickColor(player, "simplenick.dark_purple", "DARK_PURPLE");
                         break;
                     case "gold":
-                        changeNickColor(player, "rebelsnick.gold", "GOLD");
+                        changeNickColor(player, "simplenick.gold", "GOLD");
                         break;
                     case "gray":
-                        changeNickColor(player, "rebelsnick.gray", "GRAY");
+                        changeNickColor(player, "simplenick.gray", "GRAY");
                         break;
                     case "dark_gray":
-                        changeNickColor(player, "rebelsnick.dark_gray", "DARK_GRAY");
+                        changeNickColor(player, "simplenick.dark_gray", "DARK_GRAY");
                         break;
                     case "blue":
-                        changeNickColor(player, "rebelsnick.blue", "BLUE");
+                        changeNickColor(player, "simplenick.blue", "BLUE");
                         break;
                     case "green":
-                        changeNickColor(player, "rebelsnick.green", "GREEN");
+                        changeNickColor(player, "simplenick.green", "GREEN");
                         break;
                     case "aqua":
-                        changeNickColor(player, "rebelsnick.aqua", "AQUA");
+                        changeNickColor(player, "simplenick.aqua", "AQUA");
                         break;
                     case "red":
-                        changeNickColor(player, "rebelsnick.red", "RED");
+                        changeNickColor(player, "simplenick.red", "RED");
                         break;
                     case "light_purple":
-                        changeNickColor(player, "rebelsnick.light_purple", "LIGHT_PURPLE");
+                        changeNickColor(player, "simplenick.light_purple", "LIGHT_PURPLE");
                         break;
                     case "yellow":
-                        changeNickColor(player, "rebelsnick.yellow", "YELLOW");
+                        changeNickColor(player, "simplenick.yellow", "YELLOW");
                         break;
                     case "white":
-                        changeNickColor(player, "rebelsnick.white", "WHITE");
+                        changeNickColor(player, "simplenick.white", "WHITE");
                         break;
                 }
             }
@@ -259,12 +259,12 @@ public class NickChanger implements CommandExecutor {
             RebelsNick.config.set(player.getUniqueId().toString(), ChatColor.valueOf(color) + playername + ChatColor.WHITE );
         }
         else{
-            player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission to change your nickname.");
+            player.sendMessage(ChatColor.RED + "You do not have permission to change your nickname.");
         }
     }
 
     public void changeOtherColor(Player player, String playerToChange, String color){
-        if(player.hasPermission("rebelsnick.changeothernick")){
+        if(player.hasPermission("simplenick.changeothernick")){
 
             Player changePlayer = RebelsNick.getPlugin(RebelsNick.class).getServer().getPlayer(playerToChange);
 
@@ -275,7 +275,7 @@ public class NickChanger implements CommandExecutor {
             RebelsNick.config.set(changePlayer.getUniqueId().toString(), ChatColor.valueOf(color) + playername + ChatColor.WHITE );
         }
         else{
-            player.sendMessage(ChatColor.DARK_RED + "[" + ChatColor.GOLD + "MC-Rebels" + ChatColor.DARK_RED + "]" + ChatColor.RED + " You do not have permission to change your nickname.");
+            player.sendMessage(ChatColor.RED + "You do not have permission to change your nickname.");
         }
     }
 }
