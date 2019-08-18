@@ -14,7 +14,6 @@ public final class AutoTPO extends JavaPlugin {
 
     @Override
     public void onDisable(){
-        saveConfig();
         getLogger().info("AutoTPO - AutoTPO is now disabled");
     }
 }
