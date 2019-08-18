@@ -8,11 +8,9 @@ public final class AutoTPO extends JavaPlugin {
     public void onEnable(){
         getLogger().info("AutoTPO - AutoTPO is now enabled");
         Teleporter teleporter = new Teleporter(this);
-        saveConfig();
         getCommand("tpostart").setExecutor(teleporter);
         getCommand("tpostop").setExecutor(teleporter);
-
-    }
+        getCommand("tpostopall").setExecutor(teleporter);    }
 
     @Override
     public void onDisable(){
